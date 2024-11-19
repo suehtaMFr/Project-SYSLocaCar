@@ -13,17 +13,49 @@ datasource db {
   url      = "postgresql://postgres:Root@123@localhost:5433/postgres"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  Post  Post[]
+
+model Categoria {
+  id           Int        @id @default(autoincrement())
+  tipo         String     
+  valorLocacao Float
+  modelos      Modelo[]
 }
 
-model Post {
-  id       Int    @id @default(autoincrement())
-  title    String
-  content  String
-  authorId Int
-  author   User   @relation(fields: [authorId], references: [id])
+model Marca {
+  id      Int      @id @default(autoincrement())
+  nome    String
+  modelos Modelo[]
+}
+
+model Modelo {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  anoModelo   DateTime
+  qtModelo    Int
+  veiculos    Veiculo[]
+  categoriaId Int
+  marcaId     Int
+  categoria   Categoria  @relation(fields: [categoriaId], references: [id])
+  marca       Marca      @relation(fields: [marcaId], references: [id])
+}
+
+model Veiculo {
+  id              Int              @id @default(autoincrement())
+  placa           String           @unique
+  chassi          String           @unique
+  anoFabricacao   DateTime
+  cor             String
+  status          String
+  manutencoes     Manutencao[]
+  modeloId        Int
+  modelo          Modelo           @relation(fields: [modeloId], references: [id])
+}
+
+model Manutencao {
+  id              Int        @id @default(autoincrement())
+  descricao       String
+  dataManutencao  DateTime
+  valorManutencao Float
+  veiculoId       Int
+  veiculo         Veiculo    @relation(fields: [veiculoId], references: [id])
 }
