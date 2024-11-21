@@ -8,11 +8,51 @@ generator client {
   provider = "prisma-client-js"
 }
 
+//datasource db {
+//  provider = "sqlite"
+//  url      = "file:./dev.db"
+//}
+
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:Root@123@localhost:5433/postgres"
+  url      = "postgresql://user:Root123@localhost:5433/postgres"
 }
 
+model Ocorrencia {
+  id             Int      @id @default(autoincrement())
+  descricao      String
+  dataOcorrencia DateTime
+  valorOcorrencia Float
+
+  // Relacionamento com ContratoLocacao
+  contratoId Int
+  contrato   ContratoLocacao @relation(fields: [contratoId], references: [id])
+}
+
+model Pagamento {
+  id             Int      @id @default(autoincrement())
+  data           DateTime
+  valorPago      Float
+  formaPagamento String
+
+  // Relacionamento com ContratoLocacao
+  contratoId Int
+  contrato   ContratoLocacao @relation(fields: [contratoId], references: [id])
+}
+
+model ContratoLocacao {
+  id             Int          @id @default(autoincrement())
+  dataLocacao    DateTime
+  dataDevolucao  DateTime
+  valorCaucao    Float
+  valorTotal     Float
+  status         String
+
+  // Relacionamentos
+  veiculos    Veiculo[]       @relation("ContratoVeiculos")
+  ocorrencias Ocorrencia[]
+  pagamentos  Pagamento[]
+}
 
 model Categoria {
   id           Int        @id @default(autoincrement())
