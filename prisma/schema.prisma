@@ -40,20 +40,6 @@ model Pagamento {
   contrato   ContratoLocacao @relation(fields: [contratoId], references: [id])
 }
 
-model ContratoLocacao {
-  id             Int          @id @default(autoincrement())
-  dataLocacao    DateTime
-  dataDevolucao  DateTime
-  valorCaucao    Float
-  valorTotal     Float
-  status         String
-
-  // Relacionamentos
-  veiculos    Veiculo[]       @relation("ContratoVeiculos")
-  ocorrencias Ocorrencia[]
-  pagamentos  Pagamento[]
-}
-
 model Categoria {
   id           Int        @id @default(autoincrement())
   tipo         String     
@@ -86,9 +72,12 @@ model Veiculo {
   anoFabricacao   DateTime
   cor             String
   status          String
+
+  // Relacionamentos
   manutencoes     Manutencao[]
   modeloId        Int
   modelo          Modelo           @relation(fields: [modeloId], references: [id])
+  contratos   ContratoLocacao[] @relation("ContratoVeiculos")
 }
 
 model Manutencao {
@@ -98,4 +87,18 @@ model Manutencao {
   valorManutencao Float
   veiculoId       Int
   veiculo         Veiculo    @relation(fields: [veiculoId], references: [id])
+}
+
+model ContratoLocacao {
+  id             Int          @id @default(autoincrement())
+  dataLocacao    DateTime
+  dataDevolucao  DateTime
+  valorCaucao    Float
+  valorTotal     Float
+  status         String
+
+  // Relacionamentos
+  veiculos    Veiculo[]       @relation("ContratoVeiculos")
+  ocorrencias Ocorrencia[]
+  pagamentos  Pagamento[]
 }
