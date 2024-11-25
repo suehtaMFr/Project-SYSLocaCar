@@ -67,6 +67,7 @@ export const deleteCategoria = async (req: Request, res: Response) => {
     });
     res.status(204).end();
   } catch (error) {
+    console.log("ERRO ESTA AQUI: " + error);
     res.status(500).json({ error: "Failed to delete categoria" });
   }
 };
