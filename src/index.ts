@@ -1,18 +1,14 @@
-import express from 'express'
-import dotenv from 'dotenv'
+import express from "express";
+import dotenv from "dotenv";
+import router from "./routers/router";
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
-const PORTA = process.env.PORT
-app.use(express.json())
+const app = express();
+const PORTA = process.env.PORT;
+app.use(express.json());
+app.use("/api", router);
 
-app.listen(PORTA, ()=>{
-    console.log(`Servidor em execução na porta: ${PORTA}`)
-})
-
-console.log("Olá, mundo!");
-
-const soma = (a: number, b: number): number => a + b;
-
-console.log(soma(1, 2));
+app.listen(PORTA, () => {
+  console.log(`Servidor em execução na porta: ${PORTA}`);
+});
